@@ -39,12 +39,20 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
     });
 
+    const stardust_dep = b.dependency("stardust", .{
+        .target = target,
+        .optimize = optimize,
+    });
+
+
     const raylib = raylib_dep.module("raylib");
     const raygui = raylib_dep.module("raygui");
+    const stardust = stardust_dep.module("stardust");
     const raylib_artifact = raylib_dep.artifact("raylib");
     const ecs = ecs_dep.module("zig-ecs");
 
     lib.linkLibrary(raylib_artifact);
+    lib.root_module.addImport("stardust", stardust);
     lib.root_module.addImport("raylib", raylib);
     lib.root_module.addImport("ecs", ecs);
     lib.root_module.addImport("raygui", raygui);

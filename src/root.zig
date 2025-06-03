@@ -3,6 +3,7 @@ const std = @import("std");
 const rl = @import("raylib");
 const comp = @import("components/components.zig");
 const Debug = @import("components/debug.zig").Debug;
+const sd = @import("stardust");
 
 const Settings = struct {
     title: [256:0]u8 = undefined,  // Use fixed buffer for title
@@ -25,8 +26,13 @@ pub export fn run(
     render: *const fn (dt: f32) callconv(.C) void,
 ) void {
 
-    var reg = ecs.Registry.init(std.heap.page_allocator);
-    defer reg.deinit();
+    if(REG == null) {
+        sd.err("Please call init() first" , .{});
+        return;
+    }
+
+    REG = ecs.Registry.init(std.heap.page_allocator);
+    defer REG.?.deinit();
 
     rl.initWindow(SETTINGS.width, SETTINGS.height, "Game");
     defer rl.closeWindow();
@@ -38,6 +44,8 @@ pub export fn run(
     var dt: f32 = 0;
 
     start();
+
+    sd.debug("Starting Game Loop", .{});
 
     while (!rl.windowShouldClose()) {
         const current_time = rl.getTime();
@@ -75,4 +83,6 @@ pub export fn init(
     SETTINGS.fps = fps;
 
     REG = ecs.Registry.init(std.heap.page_allocator);
+
+    sd.debug("Initiated ECS registry", .{});
 }
