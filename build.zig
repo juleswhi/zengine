@@ -6,7 +6,7 @@ pub fn build(b: *std.Build) void {
     const shared = b.option(bool, "shared", "Build as shared library") orelse false;
 
     const main_mod = b.createModule(.{
-        .root_source_file = b.path("src/root.zig"),
+        .root_source_file = b.path("src/core.zig"),
         .target = target,
         .optimize = optimize,
     });
@@ -14,14 +14,14 @@ pub fn build(b: *std.Build) void {
     const lib = if (shared)
         b.addSharedLibrary(.{
             .name = "zengine",
-            .root_source_file = b.path("src/root.zig"),
+            .root_source_file = b.path("src/core.zig"),
             .target = target,
             .optimize = optimize,
         })
     else
         b.addStaticLibrary(.{
             .name = "zengine",
-            .root_source_file = b.path("src/root.zig"),
+            .root_source_file = b.path("src/core.zig"),
             .target = target,
             .optimize = optimize,
         });

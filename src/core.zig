@@ -6,7 +6,7 @@ const Debug = @import("components/debug.zig").Debug;
 const sd = @import("stardust");
 
 const Settings = struct {
-    title: [256:0]u8 = undefined,  // Use fixed buffer for title
+    title: [256:0]u8 = undefined,
     width: i32 = 1500,
     height: i32 = 800,
     fps: i32 = 240
